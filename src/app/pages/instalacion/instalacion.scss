@@ -1,0 +1,169 @@
+:host {
+  display: block;
+}
+
+.adl-route {
+  max-width: var(--adl-max-width);
+  margin-inline: auto;
+  padding: 40px 0 96px;
+}
+
+:host section {
+  margin-top: 44px;
+}
+
+:host h2 {
+  scroll-margin-top: calc(var(--adl-header-height) + 20px);
+}
+
+p + app-code-block,
+app-code-block + p,
+app-code-block + app-code-block,
+app-code-block + app-callout,
+app-code-block + .options-table,
+app-code-block + .qa-grid,
+app-code-block + .adl-list {
+  margin-top: 18px;
+}
+
+p + app-callout,
+app-callout + app-callout {
+  margin-top: 20px;
+}
+
+/* --- Tarjetas de preguntas del CLI --- */
+.qa-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.qa-card {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--adl-border);
+  background: var(--mat-sys-surface-container-low);
+
+  h3 {
+    margin: 0 0 4px;
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0 0 8px;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.qa-icon mat-icon {
+  color: var(--mat-sys-primary);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* --- Tabla de opciones --- */
+.options-table {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid var(--adl-border);
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  th,
+  td {
+    padding: 11px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--adl-border);
+  }
+
+  th {
+    background: var(--mat-sys-surface-container-low);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  td {
+    color: var(--mat-sys-on-surface-variant);
+    line-height: 1.5;
+  }
+}
+
+/* --- Lista de archivos --- */
+.file-list {
+  margin-top: 16px;
+}
+
+/* --- Stepper --- */
+.flujo-stepper {
+  margin-top: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--adl-border);
+  background: var(--mat-sys-surface-container-lowest);
+
+  ::ng-deep .mat-step-text-label {
+    font-weight: 600;
+  }
+
+  ::ng-deep .mat-step-content {
+    padding-left: 8px;
+  }
+}
+
+/* --- Errores --- */
+.errors-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.error-card {
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, #c62828 22%, transparent);
+  background: color-mix(in srgb, #c62828 4%, var(--mat-sys-surface));
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+    font-size: 0.94rem;
+    font-weight: 600;
+
+    mat-icon {
+      font-size: 19px;
+      width: 19px;
+      height: 19px;
+      color: #c62828;
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.87rem;
+    line-height: 1.6;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  .fix {
+    margin-top: 6px;
+  }
+}
