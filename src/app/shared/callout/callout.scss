@@ -1,0 +1,85 @@
+:host {
+  display: flex;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid;
+  border-left-width: 4px;
+  line-height: 1.65;
+
+  --callout-tone: var(--mat-sys-primary);
+}
+
+:host(.info) {
+  --callout-tone: #0277bd;
+}
+
+:host(.tip) {
+  --callout-tone: #2e7d32;
+}
+
+:host(.warning) {
+  --callout-tone: #b26a00;
+}
+
+:host(.danger) {
+  --callout-tone: #c62828;
+}
+
+:host(.angular) {
+  --callout-tone: #c2185b;
+}
+
+:host {
+  border-color: color-mix(in srgb, var(--callout-tone) 35%, transparent);
+  background: color-mix(in srgb, var(--callout-tone) 8%, var(--mat-sys-surface));
+}
+
+.callout-icon {
+  color: var(--callout-tone);
+  flex-shrink: 0;
+}
+
+.callout-body {
+  min-width: 0;
+}
+
+.callout-label {
+  margin: 0 0 2px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--callout-tone);
+}
+
+.callout-content {
+  color: var(--mat-sys-on-surface-variant);
+
+  p {
+    margin: 0;
+  }
+
+  p + p,
+  p + ul,
+  ul + p {
+    margin-top: 8px;
+  }
+
+  ul {
+    margin: 6px 0 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 4px;
+  }
+
+  strong {
+    color: var(--mat-sys-on-surface);
+  }
+
+  code {
+    background: color-mix(in srgb, var(--callout-tone) 12%, transparent);
+    border-radius: 5px;
+    padding: 0.1em 0.35em;
+  }
+}

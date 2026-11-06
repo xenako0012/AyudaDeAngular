@@ -1,0 +1,363 @@
+/* =============================================================================
+   Estilos globales de "Ayuda de Angular"
+   Tema Material 3 personalizado (Angular Material v22 / API mat.theme)
+   ============================================================================= */
+
+@use '@angular/material' as mat;
+
+/* Las fuentes (Roboto Variable, JetBrains Mono y Material Icons) se cargan
+   desde angular.json para que el bundler resuelva los .woff2 de node_modules. */
+
+/* --- Tema global de Angular Material --- */
+html {
+  color-scheme: light;
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$violet-palette,
+        tertiary: mat.$azure-palette,
+        theme-type: light,
+      ),
+      typography: (
+        plain-family: 'Roboto Variable',
+        brand-family: 'Roboto Variable',
+        regular-weight: 400,
+        medium-weight: 500,
+        bold-weight: 700,
+      ),
+      density: 0,
+    )
+  );
+}
+
+html.dark-theme {
+  color-scheme: dark;
+}
+
+/* --- Tokens propios de la aplicación --- */
+:root {
+  --adl-brand-font: 'Roboto Variable', 'Roboto', system-ui, sans-serif;
+  --adl-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --adl-radius: 18px;
+  --adl-max-width: 940px;
+  --adl-sidebar-width: 288px;
+  --adl-header-height: 68px;
+  --adl-hero-glow: radial-gradient(
+    1000px 460px at 12% -12%,
+    color-mix(in srgb, var(--mat-sys-primary) 26%, transparent),
+    transparent 70%
+  );
+  --adl-border: color-mix(in srgb, var(--mat-sys-outline-variant) 85%, transparent);
+}
+
+/* --- Reset suave --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-large);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--adl-brand-font), sans-serif;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--mat-sys-primary);
+}
+
+code,
+kbd,
+pre {
+  font-family: var(--adl-mono);
+  font-size: 0.86em;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--mat-sys-primary) 30%, transparent);
+}
+
+/* Scrollbar discreta */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--mat-sys-outline) 55%, transparent) transparent;
+}
+
+/* --- Utilidades globales --- */
+.adl-container {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+@media (max-width: 600px) {
+  .adl-container {
+    padding-inline: 16px;
+  }
+}
+
+.adl-mono {
+  font-family: var(--adl-mono);
+}
+
+.adl-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Estilos base de las páginas de documentación --- */
+.adl-page {
+  max-width: var(--adl-max-width);
+  margin-inline: auto;
+  padding: 40px 0 96px;
+}
+
+.adl-page > * + * {
+  margin-top: 20px;
+}
+
+.adl-page h1 {
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 2.9rem);
+  font-weight: 700;
+  line-height: 1.12;
+}
+
+.adl-page h2 {
+  margin-top: 52px;
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 1.85rem);
+  font-weight: 600;
+  scroll-margin-top: calc(var(--adl-header-height) + 20px);
+}
+
+.adl-page h3 {
+  margin-top: 34px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  scroll-margin-top: calc(var(--adl-header-height) + 20px);
+}
+
+.adl-lead {
+  font-size: 1.16rem;
+  line-height: 1.65;
+  color: var(--mat-sys-on-surface-variant);
+  max-width: 72ch;
+}
+
+.adl-text {
+  line-height: 1.7;
+  color: var(--mat-sys-on-surface-variant);
+  max-width: 76ch;
+}
+
+.adl-text strong,
+.adl-lead strong {
+  color: var(--mat-sys-on-surface);
+  font-weight: 600;
+}
+
+.adl-list {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.55rem;
+  line-height: 1.65;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.adl-list li::marker {
+  color: var(--mat-sys-primary);
+}
+
+.adl-inline-code {
+  font-family: var(--adl-mono);
+  font-size: 0.86em;
+  background: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface);
+  border: 1px solid var(--adl-border);
+  border-radius: 7px;
+  padding: 0.12em 0.38em;
+  white-space: nowrap;
+}
+
+/* --- Rutas con animación de entrada --- */
+.adl-route {
+  animation: adl-route-in 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes adl-route-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- Bloques de código resaltados con highlight.js --- */
+.adl-code pre code.hljs {
+  background: transparent;
+  padding: 0;
+  font-size: 13.4px;
+  line-height: 1.72;
+}
+
+/* --- Chroma de highlight.js adaptado al tema Material (claro) --- */
+.hljs {
+  color: var(--mat-sys-on-surface);
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-doctag,
+.hljs-type,
+.hljs-name,
+.hljs-strong {
+  color: #7c3aed;
+  font-weight: 500;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string {
+  color: #0f766e;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: color-mix(in srgb, var(--mat-sys-on-surface-variant) 78%, transparent);
+  font-style: italic;
+}
+
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-template-variable,
+.hljs-variable {
+  color: #b45309;
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.class_,
+.hljs-selector-class {
+  color: #1d4ed8;
+}
+
+.hljs-attr,
+.hljs-property {
+  color: #a21caf;
+}
+
+.hljs-tag,
+.hljs-punctuation {
+  color: color-mix(in srgb, var(--mat-sys-on-surface) 72%, transparent);
+}
+
+.hljs-built_in,
+.hljs-params {
+  color: #0369a1;
+}
+
+/* --- Chroma de highlight.js adaptado al tema Material (oscuro) --- */
+.dark-theme .hljs-keyword,
+.dark-theme .hljs-selector-tag,
+.dark-theme .hljs-literal,
+.dark-theme .hljs-section,
+.dark-theme .hljs-doctag,
+.dark-theme .hljs-type,
+.dark-theme .hljs-name {
+  color: #c4b5fd;
+}
+
+.dark-theme .hljs-string,
+.dark-theme .hljs-regexp,
+.dark-theme .hljs-addition,
+.dark-theme .hljs-attribute,
+.dark-theme .hljs-meta .hljs-string {
+  color: #5eead4;
+}
+
+.dark-theme .hljs-comment,
+.dark-theme .hljs-quote {
+  color: color-mix(in srgb, var(--mat-sys-on-surface-variant) 72%, transparent);
+}
+
+.dark-theme .hljs-number,
+.dark-theme .hljs-symbol,
+.dark-theme .hljs-bullet,
+.dark-theme .hljs-link,
+.dark-theme .hljs-meta,
+.dark-theme .hljs-selector-id,
+.dark-theme .hljs-template-variable,
+.dark-theme .hljs-variable {
+  color: #fcd34d;
+}
+
+.dark-theme .hljs-title,
+.dark-theme .hljs-title.function_,
+.dark-theme .hljs-title.class_,
+.dark-theme .hljs-selector-class {
+  color: #93c5fd;
+}
+
+.dark-theme .hljs-attr,
+.dark-theme .hljs-property {
+  color: #f0abfc;
+}
+
+.dark-theme .hljs-built_in,
+.dark-theme .hljs-params {
+  color: #7dd3fc;
+}
