@@ -243,6 +243,38 @@ export const NAV_SECTIONS: readonly NavSection[] = [
     ],
   },
   {
+    title: 'Examen',
+    icon: 'assignment',
+    description: 'Ejercicios prácticos de Angular Material con enunciado, pistas y solución.',
+    chapters: [
+      {
+        title: 'Ejercicios de Angular Material',
+        route: '/ejercicios',
+        description:
+          'Diez ejercicios tipo examen sobre Material (tabla, formularios, dialogs, sidenav…) con solución completa y simulacro final.',
+        icon: 'assignment',
+        level: 'intermedio',
+        minutes: 45,
+        tags: [
+          'ejercicios',
+          'examen',
+          'material',
+          'tabla',
+          'formulario',
+          'dialog',
+          'sidenav',
+          'simulacro',
+        ],
+        summary: [
+          'Diez ejercicios con requisitos, pistas y criterios de corrección',
+          'Soluciones completas desglosadas por archivo',
+          'Simulacro final de 90 minutos con rúbrica',
+          'Lista de comprobación para autoevaluarse',
+        ],
+      },
+    ],
+  },
+  {
     title: 'Recursos',
     icon: 'library_books',
     description: 'Referencias rápidas y preguntas habituales.',

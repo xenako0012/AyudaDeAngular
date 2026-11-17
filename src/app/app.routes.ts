@@ -83,6 +83,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/material/material').then((m) => m.MaterialPage),
   },
   {
+    path: 'ejercicios',
+    title: 'Ejercicios de Angular Material · Ayuda de Angular',
+    loadComponent: () => import('./pages/ejercicios/ejercicios').then((m) => m.EjerciciosPage),
+  },
+  {
     path: 'recursos',
     title: 'Cheatsheet de CLI · Ayuda de Angular',
     loadComponent: () => import('./pages/recursos/recursos').then((m) => m.RecursosPage),
