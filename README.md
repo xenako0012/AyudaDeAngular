@@ -18,10 +18,18 @@ construidas con las APIs modernas del framework.
 | **Fundamentos** | Componentes standalone · Binding en plantillas · Signals y reactividad · Control flow (`@if`, `@for`, `@switch`) |
 | **Aplicaciones completas** | Routing y navegación · Comunicación entre componentes · Servicios e inyección de dependencias · Formularios reactivos · Módulos (NgModule) |
 | **Angular Material** | Guía de instalación, tematización M3 y catálogo de 37 componentes con ejemplos en vivo |
+| **Examen** | Ejercicios de Angular Material: 10 enunciados con pistas, criterios de corrección, solución completa y simulacro de 90 min |
 | **Recursos** | Cheatsheet de Angular CLI con copia al portapapeles y enlaces oficiales |
 
 Además: portada con ruta de aprendizaje, buscador global (`Ctrl`/`⌘` + `K`), seguimiento de
 progreso guardado en `localStorage`, tema claro/oscuro y diseño responsive.
+
+### Zona de examen
+
+`/ejercicios` recoge diez ejercicios prácticos de Angular Material con el mismo formato que una
+prueba: contexto, requisitos numerados, pistas plegables, criterios de corrección con puntuación,
+solución completa archivo por archivo y lista de comprobación. Incluye filtro por dificultad,
+marcado de ejercicios revisados y un **simulacro final de 90 minutos** con rúbrica de 40 puntos.
 
 ## Stack
 
@@ -71,6 +79,10 @@ src/app/
   `color-scheme`, sin recompilar.
 - **Resaltado seguro**: el HTML de highlight.js se escapa y proviene de cadenas literales del
   código, nunca de entrada del usuario.
+- **Contenido separado de la vista**: capítulos, catálogo de Material y ejercicios viven en
+  `src/app/data/`, así que añadir un ejercicio nuevo no requiere tocar la plantilla.
+- **Pruebas**: `ng test` incluye specs de la página de ejercicios (montaje, número de enunciados,
+  coherencia de puntuaciones y rúbrica del simulacro).
 
 ## Licencia
 

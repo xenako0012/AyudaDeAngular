@@ -7,6 +7,7 @@ import { RouterLink } from '@angular/router';
 
 import { AppInfoService, ProgressService } from '../../core/progress.service';
 import { PREGUNTAS_FRECUENTES, NAV_SECTIONS, SITE, TOTAL_CHAPTERS } from '../../data/content.data';
+import { EJERCICIOS } from '../../data/ejercicios.data';
 import { MATERIAL_COMPONENTS } from '../../data/material.data';
 import { CodeBlockComponent } from '../../shared/code-block/code-block';
 
@@ -53,6 +54,10 @@ interface ModernoVsClasico {
           <a matButton="outlined" class="cta" routerLink="/material">
             <mat-icon>palette</mat-icon>
             Explorar Angular Material
+          </a>
+          <a matButton="text" class="cta" routerLink="/ejercicios">
+            <mat-icon>assignment</mat-icon>
+            Ejercicios de examen
           </a>
         </div>
         <dl class="hero-stats">
@@ -225,6 +230,50 @@ interface ModernoVsClasico {
       </div>
     </section>
 
+    <!-- ============================ EJERCICIOS ============================ -->
+    <section class="examen" aria-labelledby="examen-title">
+      <div class="examen-copy">
+        <p class="eyebrow">Zona de examen</p>
+        <h2 id="examen-title">Practica con ejercicios tipo prueba</h2>
+        <p class="adl-text">
+          Diez ejercicios de Angular Material con enunciado, requisitos numerados, pistas,
+          criterios de corrección y solución completa. Al final, un simulacro de 90 minutos con
+          rúbrica para llegar al examen con todo practicado.
+        </p>
+        <div class="examen-stats">
+          <div>
+            <strong>{{ ejerciciosTotal }}</strong>
+            <span>ejercicios</span>
+          </div>
+          <div>
+            <strong>{{ ejerciciosPuntos }}</strong>
+            <span>puntos repartidos</span>
+          </div>
+          <div>
+            <strong>90</strong>
+            <span>min de simulacro</span>
+          </div>
+        </div>
+        <a matButton="filled" class="cta" routerLink="/ejercicios">
+          <mat-icon>play_arrow</mat-icon>
+          Empezar los ejercicios
+        </a>
+      </div>
+
+      <ol class="examen-list">
+        @for (item of ejerciciosDestacados; track item.titulo) {
+          <li>
+            <span class="ex-num">{{ item.numero }}</span>
+            <div>
+              <strong>{{ item.titulo }}</strong>
+              <span>{{ item.tag }}</span>
+            </div>
+            <span class="ex-nivel" [attr.data-nivel]="item.nivel">{{ item.nivel }}</span>
+          </li>
+        }
+      </ol>
+    </section>
+
     <!-- ============================ FAQ ============================ -->
     <section class="faq" aria-labelledby="faq-title">
       <header>
@@ -279,6 +328,16 @@ export class HomePage {
   protected readonly overallProgress = computed(() =>
     Math.round((this.progress.completed() / this.totalChapters) * 100),
   );
+
+  protected readonly ejerciciosTotal = EJERCICIOS.length;
+  protected readonly ejerciciosPuntos = EJERCICIOS.reduce((total, e) => total + e.puntos, 0);
+
+  protected readonly ejerciciosDestacados = EJERCICIOS.slice(0, 5).map((e) => ({
+    numero: String(e.numero).padStart(2, '0'),
+    titulo: e.titulo,
+    tag: e.tags.slice(0, 3).join(' · '),
+    nivel: e.dificultad,
+  }));
 
   protected readonly pillars = [
     {
