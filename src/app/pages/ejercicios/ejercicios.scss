@@ -685,3 +685,182 @@ app-callout mat-progress-bar {
     }
   }
 }
+
+/* ---------------- Examen oficial (oculto tras un botón) ---------------- */
+.examen-dam2 {
+  margin-top: 48px;
+}
+
+.examen-cover {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  margin-top: 20px;
+  padding: 22px 24px;
+  border-radius: 20px;
+  border: 1px dashed color-mix(in srgb, var(--mat-sys-primary) 40%, transparent);
+  background:
+    radial-gradient(520px 180px at 0% 0%, color-mix(in srgb, var(--mat-sys-primary) 10%, transparent), transparent 70%),
+    var(--mat-sys-surface-container-lowest);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+
+  &.abierto {
+    border-style: solid;
+    border-color: color-mix(in srgb, var(--mat-sys-primary) 45%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+  }
+
+  h3 {
+    margin: 2px 0 4px;
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+}
+
+.cover-icono {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #7c3aed, #c2185b);
+
+  mat-icon {
+    font-size: 26px;
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.cover-asignatura {
+  margin: 0 0 8px;
+  font-size: 0.84rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.cover-accion {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+
+  button mat-icon {
+    margin-right: 6px;
+  }
+}
+
+.cover-nota {
+  margin: 0;
+  font-size: 0.74rem;
+  text-align: right;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.examen-contenido {
+  display: grid;
+  gap: 20px;
+  margin-top: 22px;
+  animation: examen-aparece 320ms ease-out;
+}
+
+@keyframes examen-aparece {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .examen-contenido {
+    animation: none;
+  }
+}
+
+.examen-general,
+.examen-ejercicio,
+.examen-rubrica {
+  padding: 22px 24px;
+  border-radius: 20px;
+  border: 1px solid var(--adl-border);
+  background: var(--mat-sys-surface-container-lowest);
+}
+
+.examen-general {
+  border-left: 3px solid var(--mat-sys-primary);
+}
+
+.examen-dos-columnas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.examen-ejercicio {
+  .ej-section,
+  .ej-acordeon {
+    margin-top: 16px;
+  }
+}
+
+.examen-pts {
+  gap: 5px;
+}
+
+.examen-rubrica {
+  display: grid;
+  gap: 20px;
+
+  .rubrica {
+    margin: 0;
+  }
+}
+
+.examen-estructura {
+  pre {
+    margin: 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--adl-border);
+    background: var(--mat-sys-surface-container);
+    font-family: var(--adl-mono);
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.examen-consejos {
+  .requisitos {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 760px) {
+  .examen-cover {
+    grid-template-columns: auto minmax(0, 1fr);
+
+    .cover-accion {
+      grid-column: 1 / -1;
+      justify-items: stretch;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .cover-nota {
+      text-align: center;
+    }
+  }
+}
+
+:host-context(.dark-theme) .examen-estructura pre {
+  border-color: color-mix(in srgb, #fff 10%, transparent);
+}

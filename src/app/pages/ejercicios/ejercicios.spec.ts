@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { describe, expect, it, beforeAll } from 'vitest';
 
+import { EXAMEN_DAM2 } from '../../data/examenes.data';
 import { EJERCICIOS, SIMULACRO } from '../../data/ejercicios.data';
 import { EjerciciosPage } from './ejercicios';
 
@@ -82,5 +83,75 @@ describe('EjerciciosPage', () => {
   it('los totales del simulacro suman los 40 puntos anunciados', () => {
     const total = SIMULACRO.rubrica.reduce((suma, c) => suma + c.puntos, 0);
     expect(total).toBe(SIMULACRO.puntos);
+  });
+
+  describe('examen oficial DAM2', () => {
+    it('empieza oculto: no hay contenidos hasta pulsar el botón', async () => {
+      const fixture = await crear();
+      const el: HTMLElement = fixture.nativeElement;
+
+      expect(el.querySelector('#examen-dam2-contenido')).toBeNull();
+      expect(el.textContent).not.toContain('Enunciado literal');
+
+      const boton = el.querySelector<HTMLButtonElement>('.examen-cover button');
+      expect(boton).not.toBeNull();
+      expect(boton!.textContent).toContain('Mostrar el examen');
+      expect(boton!.getAttribute('aria-expanded')).toBe('false');
+    });
+
+    it('el botón revela los seis ejercicios, la rúbrica y las soluciones', async () => {
+      const fixture = await crear();
+      const el: HTMLElement = fixture.nativeElement;
+
+      el.querySelector<HTMLButtonElement>('.examen-cover button')!.click();
+      fixture.detectChanges();
+
+      const contenido = el.querySelector('#examen-dam2-contenido');
+      expect(contenido).not.toBeNull();
+      expect(el.querySelectorAll('.examen-ejercicio').length).toBe(
+        EXAMEN_DAM2.ejercicios.length,
+      );
+      expect(contenido!.textContent).toContain('Rúbrica oficial');
+      expect(contenido!.textContent).toContain('Enunciado literal');
+      // La solución del cronómetro está disponible en la página
+      expect(contenido!.textContent).toContain('cronometro.ts');
+      expect(el.querySelector<HTMLButtonElement>('.examen-cover button')!.textContent).toContain(
+        'Ocultar el examen',
+      );
+    });
+
+    it('se puede volver a ocultar', async () => {
+      const fixture = await crear();
+      const el: HTMLElement = fixture.nativeElement;
+      const boton = () => el.querySelector<HTMLButtonElement>('.examen-cover button')!;
+
+      boton().click();
+      fixture.detectChanges();
+      expect(el.querySelector('#examen-dam2-contenido')).not.toBeNull();
+
+      boton().click();
+      fixture.detectChanges();
+      expect(el.querySelector('#examen-dam2-contenido')).toBeNull();
+    });
+
+    it('la rúbrica oficial suma los 10 puntos del examen', () => {
+      const total = EXAMEN_DAM2.rubrica.reduce((suma, c) => suma + c.puntos, 0);
+      expect(total).toBeCloseTo(EXAMEN_DAM2.puntos, 5);
+    });
+
+    it('los puntos de los seis ejercicios coinciden con la rúbrica', () => {
+      expect(EXAMEN_DAM2.ejercicios.map((e) => e.numero)).toEqual([1, 2, 3, 4, 5, 6]);
+
+      const sumaEjercicios = EXAMEN_DAM2.ejercicios.reduce((t, e) => t + e.puntos, 0);
+      // 2 + 1.5 + 1 + 2 + 1 + 1 = 8.5, más 1.5 de «uso del framework»
+      expect(sumaEjercicios).toBeCloseTo(8.5, 5);
+      expect(sumaEjercicios + 1.5).toBeCloseTo(EXAMEN_DAM2.puntos, 5);
+
+      for (const ejercicio of EXAMEN_DAM2.ejercicios) {
+        expect(ejercicio.solucion.length).toBeGreaterThan(0);
+        expect(ejercicio.queSePide.length).toBeGreaterThan(0);
+        expect(ejercicio.comprobar.length).toBeGreaterThan(0);
+      }
+    });
   });
 });

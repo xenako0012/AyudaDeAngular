@@ -31,6 +31,10 @@ prueba: contexto, requisitos numerados, pistas plegables, criterios de correcci�
 solución completa archivo por archivo y lista de comprobación. Incluye filtro por dificultad,
 marcado de ejercicios revisados y un **simulacro final de 90 minutos** con rúbrica de 40 puntos.
 
+Al final de la página, el **examen oficial DAM2** (cronómetro + saludo, 6 ejercicios, 10 puntos y
+1 h 40 min) permanece oculto hasta que se pulsa «Mostrar el examen»: así se puede intentar en frío
+antes de ver los enunciados, las soluciones y la rúbrica de corrección.
+
 ## Stack
 
 - **Angular 22.2** — standalone components, signals, **zoneless** (`provideZonelessChangeDetection`)
