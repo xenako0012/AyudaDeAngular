@@ -48,3 +48,36 @@ export interface Simulacro {
   readonly consejos: readonly string[];
   readonly solucion: readonly FicheroSolucion[];
 }
+
+/** Un ejercicio concreto dentro de un examen oficial. */
+export interface EjercicioExamen {
+  readonly numero: number;
+  readonly titulo: string;
+  readonly puntos: number;
+  /** Enunciado literal del examen. */
+  readonly enunciado: string;
+  /** Qué se evalúa, redactado en claro. */
+  readonly queSePide: readonly string[];
+  readonly solucion: readonly FicheroSolucion[];
+  readonly comprobar: readonly string[];
+}
+
+/** Examen oficial con su enunciado y su rúbrica de corrección. */
+export interface ExamenOficial {
+  readonly id: string;
+  readonly titulo: string;
+  readonly subtitulo: string;
+  readonly asignatura: string;
+  readonly duracion: string;
+  readonly puntos: number;
+  readonly icon: string;
+  readonly resumen: string;
+  readonly enunciadoGeneral: readonly string[];
+  readonly ejercicios: readonly EjercicioExamen[];
+  readonly rubrica: readonly Criterio[];
+  readonly penalizaciones: readonly string[];
+  readonly materialPermitido: readonly string[];
+  /** Estructura de archivos de la solución completa. */
+  readonly estructura: string;
+  readonly consejos: readonly string[];
+}
