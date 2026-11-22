@@ -5,6 +5,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { EXAMEN_DAM2 } from '../../data/examenes.data';
 import { EJERCICIOS, SIMULACRO } from '../../data/ejercicios.data';
@@ -24,6 +25,7 @@ import { SectionHeaderComponent } from '../../shared/section-header/section-head
     MatExpansionModule,
     MatIconModule,
     MatProgressBarModule,
+    MatTooltipModule,
     CodeBlockComponent,
     CalloutComponent,
     ChapterNavComponent,
@@ -352,191 +354,6 @@ import { SectionHeaderComponent } from '../../shared/section-header/section-head
         </article>
       </section>
 
-      <!-- ==================== EXAMEN OFICIAL (OCULTO) ==================== -->
-      <section aria-labelledby="examen-dam2" class="examen-dam2">
-        <h2 id="examen-dam2">Examen oficial DAM2</h2>
-        <p class="adl-text">
-          El examen real del módulo, tal y como se entregó: seis ejercicios encadenados sobre un
-          cronómetro con lapsos, 10 puntos y 1 h 40 min. Está oculto a propósito, para que puedas
-          intentarlo en frío antes de mirar nada.
-        </p>
-
-        <article class="examen-cover" [class.abierto]="mostrarExamen()">
-          <div class="cover-icono">
-            <mat-icon aria-hidden="true">{{ examen.icon }}</mat-icon>
-          </div>
-
-          <div class="cover-info">
-            <p class="sim-eyebrow">Examen de convocatoria</p>
-            <h3>{{ examen.titulo }} · {{ examen.subtitulo }}</h3>
-            <p class="cover-asignatura">{{ examen.asignatura }}</p>
-            <div class="sim-meta">
-              <span><mat-icon aria-hidden="true">timer</mat-icon> {{ examen.duracion }}</span>
-              <span><mat-icon aria-hidden="true">grade</mat-icon> {{ examen.puntos }} puntos</span>
-              <span
-                ><mat-icon aria-hidden="true">checklist</mat-icon>
-                {{ examen.ejercicios.length }} ejercicios</span
-              >
-            </div>
-          </div>
-
-          <div class="cover-accion">
-            <button
-              matButton="filled"
-              type="button"
-              [attr.aria-expanded]="mostrarExamen()"
-              aria-controls="examen-dam2-contenido"
-              (click)="alternarExamen()"
-            >
-              <mat-icon>{{ mostrarExamen() ? 'visibility_off' : 'lock_open' }}</mat-icon>
-              {{ mostrarExamen() ? 'Ocultar el examen' : 'Mostrar el examen' }}
-            </button>
-            <p class="cover-nota">
-              {{ mostrarExamen() ? 'Incluye enunciados, soluciones y rúbrica.' : 'Enunciados + soluciones + rúbrica oficial.' }}
-            </p>
-          </div>
-        </article>
-
-        @if (mostrarExamen()) {
-          <div id="examen-dam2-contenido" class="examen-contenido">
-            <div class="examen-general">
-              <p class="label">Enunciado</p>
-              <ol class="requisitos">
-                @for (linea of examen.enunciadoGeneral; track linea) {
-                  <li>{{ linea }}</li>
-                }
-              </ol>
-
-              <div class="examen-dos-columnas">
-                <div>
-                  <p class="label">Penalizaciones</p>
-                  <ul class="adl-list">
-                    @for (item of examen.penalizaciones; track item) {
-                      <li>{{ item }}</li>
-                    }
-                  </ul>
-                </div>
-                <div>
-                  <p class="label">Material permitido</p>
-                  <ul class="adl-list">
-                    @for (item of examen.materialPermitido; track item) {
-                      <li>{{ item }}</li>
-                    }
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            @for (ej of examen.ejercicios; track ej.numero) {
-              <article class="examen-ejercicio">
-                <header class="ej-head">
-                  <div class="ej-num">{{ ej.numero }}</div>
-                  <div class="ej-title">
-                    <h3>{{ ej.titulo }}</h3>
-                    <div class="ej-meta">
-                      <span class="examen-pts">
-                        <mat-icon aria-hidden="true">grade</mat-icon>
-                        {{ ej.puntos }} puntos
-                      </span>
-                      <span>
-                        <mat-icon aria-hidden="true">checklist</mat-icon>
-                        {{ ej.queSePide.length }} criterios
-                      </span>
-                    </div>
-                  </div>
-                </header>
-
-                <div class="ej-contexto">
-                  <p class="label">Enunciado literal</p>
-                  <p class="adl-text">{{ ej.enunciado }}</p>
-                </div>
-
-                <div class="ej-section">
-                  <p class="label">Qué se evalúa</p>
-                  <ul class="adl-list">
-                    @for (item of ej.queSePide; track item) {
-                      <li>{{ item }}</li>
-                    }
-                  </ul>
-                </div>
-
-                <mat-accordion class="ej-acordeon">
-                  <mat-expansion-panel class="solucion">
-                    <mat-expansion-panel-header>
-                      <mat-panel-title>
-                        <mat-icon aria-hidden="true">code</mat-icon>
-                        Ver solución del ejercicio
-                      </mat-panel-title>
-                      <mat-panel-description>
-                        {{ ej.solucion.length }} archivos
-                      </mat-panel-description>
-                    </mat-expansion-panel-header>
-
-                    <div class="solucion-body">
-                      @for (fichero of ej.solucion; track fichero.filename) {
-                        <app-code-block
-                          [language]="fichero.language"
-                          [filename]="fichero.filename"
-                          [code]="fichero.code"
-                        />
-                      }
-
-                      <div class="comprobar">
-                        <p class="label">Comprueba que cumple la rúbrica</p>
-                        <ul>
-                          @for (item of ej.comprobar; track item) {
-                            <li>
-                              <mat-icon aria-hidden="true">check_box</mat-icon>
-                              {{ item }}
-                            </li>
-                          }
-                        </ul>
-                      </div>
-                    </div>
-                  </mat-expansion-panel>
-                </mat-accordion>
-              </article>
-            }
-
-            <article class="examen-rubrica">
-              <div class="rubrica">
-                <p class="label">Rúbrica oficial · {{ examen.puntos }} puntos</p>
-                @for (item of examen.rubrica; track item.criterio) {
-                  <div class="rubrica-row">
-                    <span>{{ item.criterio }}</span>
-                    <span class="barra">
-                      <i [style.width.%]="(item.puntos / examen.puntos) * 100"></i>
-                    </span>
-                    <strong>{{ item.puntos }}</strong>
-                  </div>
-                }
-              </div>
-
-              <div class="examen-estructura">
-                <p class="label">Estructura de la entrega</p>
-                <pre><code>{{ examen.estructura }}</code></pre>
-              </div>
-
-              <div class="examen-consejos">
-                <p class="label">Cómo atacarlo en 100 minutos</p>
-                <ol class="requisitos">
-                  @for (tip of examen.consejos; track tip) {
-                    <li>{{ tip }}</li>
-                  }
-                </ol>
-              </div>
-            </article>
-
-            <app-callout type="warning">
-              <p>
-                Este examen es el de una convocatoria real: si lo usas para practicar, cronométrate
-                de verdad. Cada minuto de más resta 0,2 puntos y el uso de IA o copiar supone un 0.
-              </p>
-            </app-callout>
-          </div>
-        }
-      </section>
-
       <section aria-labelledby="errores">
         <h2 id="errores">Los cinco errores que más puntos cuestan</h2>
         <div class="errores-grid">
@@ -553,6 +370,77 @@ import { SectionHeaderComponent } from '../../shared/section-header/section-head
       </section>
 
       <app-chapter-nav route="/ejercicios" />
+
+      <!--
+        ==================== EXAMEN ANTERIOR (OCULTO) ====================
+        Disparador mínimo y discreto: no es un apartado a la vista, es una
+        puerta trasera. Al abrirlo solo se muestran dos cosas, todo seguido:
+        el enunciado del examen y el código completo del solucionario.
+      -->
+      <section aria-labelledby="examen-anterior" class="examen-anterior">
+        <div class="examen-puerta">
+          <button
+            matIconButton
+            type="button"
+            class="disparador"
+            [attr.aria-expanded]="mostrarExamen()"
+            [attr.aria-label]="
+              mostrarExamen()
+                ? 'Ocultar el enunciado y el solucionario del examen anterior'
+                : 'Ver el enunciado y el solucionario del examen anterior'
+            "
+            [matTooltip]="mostrarExamen() ? 'Ocultar' : 'Examen anterior'"
+            aria-controls="examen-anterior-contenido"
+            (click)="alternarExamen()"
+          >
+            <mat-icon aria-hidden="true">{{ mostrarExamen() ? 'visibility_off' : 'key' }}</mat-icon>
+          </button>
+        </div>
+
+        @if (mostrarExamen()) {
+          <article id="examen-anterior-contenido" class="examen-anterior-contenido">
+            <!-- Enunciado del examen, tal cual -->
+            <header class="examen-cabecera">
+              <h3 id="examen-anterior">{{ examen.titulo }} · {{ examen.subtitulo }}</h3>
+              <p class="examen-datos">
+                {{ examen.asignatura }} · {{ examen.duracion }} ·
+                {{ examen.puntos }} puntos · {{ examen.ejercicios.length }} ejercicios
+              </p>
+            </header>
+
+            <div class="examen-bloque">
+              <p class="label">Enunciado</p>
+              <ol class="enunciado-lista">
+                @for (linea of examen.enunciadoGeneral; track linea) {
+                  <li>{{ linea }}</li>
+                }
+              </ol>
+
+              <p class="examen-nota">
+                Penalizaciones: {{ examen.penalizaciones.join(' ') }} · Material permitido:
+                {{ examen.materialPermitido.join(' ') }}
+              </p>
+            </div>
+
+            <!-- Código completo del solucionario, todo junto y comentado -->
+            <div class="examen-bloque">
+              <p class="label">Solucionario · {{ totalFicherosExamen }} archivos</p>
+              <p class="examen-nota">
+                Proyecto <code>cronometro-app</code>. Cada archivo lleva comentarios explicando qué
+                hace y por qué: es el examen resuelto de principio a fin.
+              </p>
+
+              @for (fichero of solucionarioExamen; track fichero.filename) {
+                <app-code-block
+                  [language]="fichero.language"
+                  [filename]="fichero.filename"
+                  [code]="fichero.code"
+                />
+              }
+            </div>
+          </article>
+        }
+      </section>
     </div>
   `,
 })
@@ -561,7 +449,12 @@ export class EjerciciosPage {
   protected readonly simulacro = SIMULACRO;
   protected readonly examen = EXAMEN_DAM2;
 
-  /** El examen oficial permanece oculto hasta que se pulsa el botón. */
+  /** Solucionario completo del examen, en orden de lectura y sin duplicados. */
+  protected readonly solucionarioExamen = EXAMEN_DAM2.solucion;
+
+  protected readonly totalFicherosExamen = this.solucionarioExamen.length;
+
+  /** La puerta al examen anterior permanece cerrada hasta pulsar el disparador. */
   protected readonly mostrarExamen = signal(false);
 
   protected alternarExamen(): void {
