@@ -85,73 +85,89 @@ describe('EjerciciosPage', () => {
     expect(total).toBe(SIMULACRO.puntos);
   });
 
-  describe('examen oficial DAM2', () => {
-    it('empieza oculto: no hay contenidos hasta pulsar el botón', async () => {
+  describe('examen anterior (puerta trasera)', () => {
+    it('el disparador está oculto y no hay contenido antes de pulsarlo', async () => {
       const fixture = await crear();
       const el: HTMLElement = fixture.nativeElement;
 
-      expect(el.querySelector('#examen-dam2-contenido')).toBeNull();
-      expect(el.textContent).not.toContain('Enunciado literal');
+      // Hay un botón discreto, pero ningún enunciado ni código en el DOM.
+      expect(el.querySelector('#examen-anterior-contenido')).toBeNull();
+      // No se filtra ni un fragmento del examen antes de abrir la puerta.
+      expect(el.textContent).not.toContain('Crea una aplicación en Angular');
+      expect(el.querySelectorAll('.examen-anterior app-code-block').length).toBe(0);
 
-      const boton = el.querySelector<HTMLButtonElement>('.examen-cover button');
+      const boton = el.querySelector<HTMLButtonElement>('.disparador');
       expect(boton).not.toBeNull();
-      expect(boton!.textContent).toContain('Mostrar el examen');
+      // El disparador es solo un icono: el único texto es el nombre del icono.
+      expect(boton!.querySelectorAll('mat-icon').length).toBe(1);
+      expect(boton!.textContent?.trim()).toBe('key');
       expect(boton!.getAttribute('aria-expanded')).toBe('false');
+      // Etiqueta accesible larga: el texto visible es mínimo a propósito.
+      expect(boton!.getAttribute('aria-label')).toContain('examen anterior');
     });
 
-    it('el botón revela los seis ejercicios, la rúbrica y las soluciones', async () => {
+    it('al pulsarlo muestra solo el enunciado y el código del solucionario', async () => {
       const fixture = await crear();
       const el: HTMLElement = fixture.nativeElement;
 
-      el.querySelector<HTMLButtonElement>('.examen-cover button')!.click();
+      el.querySelector<HTMLButtonElement>('.disparador')!.click();
       fixture.detectChanges();
 
-      const contenido = el.querySelector('#examen-dam2-contenido');
+      const contenido = el.querySelector('#examen-anterior-contenido')!;
       expect(contenido).not.toBeNull();
-      expect(el.querySelectorAll('.examen-ejercicio').length).toBe(
-        EXAMEN_DAM2.ejercicios.length,
+
+      // 1) Enunciado (los tres párrafos del examen)
+      expect(contenido.textContent).toContain('Enunciado');
+      expect(contenido.textContent).toContain('Crea una aplicación en Angular');
+      expect(contenido.textContent).toContain('bienvenido de vuelta');
+      expect(contenido.textContent).toContain('routerLink');
+
+      // 2) Solucionario completo, con los archivos clave
+      for (const archivo of ['app.routes.ts', 'saludo.ts', 'cronometro.ts', 'lapso.ts', 'formato.ts']) {
+        expect(contenido.textContent).toContain(archivo);
+      }
+
+      // Ni rúbrica ni listas de comprobación: solo enunciado + código.
+      expect(contenido.textContent).not.toContain('Rúbrica');
+      expect(contenido.querySelectorAll('.rubrica-row').length).toBe(0);
+      expect(contenido.querySelectorAll('.comprobar').length).toBe(0);
+    });
+
+    it('los archivos del solucionario están comentados', () => {
+      const conComentarios = EXAMEN_DAM2.solucion.filter((f) =>
+        f.language === 'ts' || f.language === 'scss' || f.language === 'html'
+          ? /\/\/|<!--/.test(f.code)
+          : true,
       );
-      expect(contenido!.textContent).toContain('Rúbrica oficial');
-      expect(contenido!.textContent).toContain('Enunciado literal');
-      // La solución del cronómetro está disponible en la página
-      expect(contenido!.textContent).toContain('cronometro.ts');
-      expect(el.querySelector<HTMLButtonElement>('.examen-cover button')!.textContent).toContain(
-        'Ocultar el examen',
-      );
+      // Al menos el 80% del solucionario lleva comentarios explicativos.
+      expect(conComentarios.length / EXAMEN_DAM2.solucion.length).toBeGreaterThanOrEqual(0.8);
     });
 
     it('se puede volver a ocultar', async () => {
       const fixture = await crear();
       const el: HTMLElement = fixture.nativeElement;
-      const boton = () => el.querySelector<HTMLButtonElement>('.examen-cover button')!;
+      const boton = () => el.querySelector<HTMLButtonElement>('.disparador')!;
 
       boton().click();
       fixture.detectChanges();
-      expect(el.querySelector('#examen-dam2-contenido')).not.toBeNull();
+      expect(el.querySelector('#examen-anterior-contenido')).not.toBeNull();
+      expect(boton().getAttribute('aria-expanded')).toBe('true');
 
       boton().click();
       fixture.detectChanges();
-      expect(el.querySelector('#examen-dam2-contenido')).toBeNull();
+      expect(el.querySelector('#examen-anterior-contenido')).toBeNull();
     });
 
-    it('la rúbrica oficial suma los 10 puntos del examen', () => {
-      const total = EXAMEN_DAM2.rubrica.reduce((suma, c) => suma + c.puntos, 0);
-      expect(total).toBeCloseTo(EXAMEN_DAM2.puntos, 5);
-    });
-
-    it('los puntos de los seis ejercicios coinciden con la rúbrica', () => {
+    it('el solucionario cubre los seis ejercicios sin duplicados', () => {
       expect(EXAMEN_DAM2.ejercicios.map((e) => e.numero)).toEqual([1, 2, 3, 4, 5, 6]);
 
-      const sumaEjercicios = EXAMEN_DAM2.ejercicios.reduce((t, e) => t + e.puntos, 0);
-      // 2 + 1.5 + 1 + 2 + 1 + 1 = 8.5, más 1.5 de «uso del framework»
-      expect(sumaEjercicios).toBeCloseTo(8.5, 5);
-      expect(sumaEjercicios + 1.5).toBeCloseTo(EXAMEN_DAM2.puntos, 5);
+      const nombres = EXAMEN_DAM2.solucion.map((f) => f.filename);
+      expect(new Set(nombres).size).toBe(nombres.length);
+      expect(EXAMEN_DAM2.solucion.length).toBeGreaterThan(10);
 
-      for (const ejercicio of EXAMEN_DAM2.ejercicios) {
-        expect(ejercicio.solucion.length).toBeGreaterThan(0);
-        expect(ejercicio.queSePide.length).toBeGreaterThan(0);
-        expect(ejercicio.comprobar.length).toBeGreaterThan(0);
-      }
+      // La rúbrica oficial sigue sumando los 10 puntos.
+      const total = EXAMEN_DAM2.rubrica.reduce((suma, c) => suma + c.puntos, 0);
+      expect(total).toBeCloseTo(EXAMEN_DAM2.puntos, 5);
     });
   });
 });

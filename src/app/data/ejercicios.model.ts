@@ -58,8 +58,6 @@ export interface EjercicioExamen {
   readonly enunciado: string;
   /** Qué se evalúa, redactado en claro. */
   readonly queSePide: readonly string[];
-  readonly solucion: readonly FicheroSolucion[];
-  readonly comprobar: readonly string[];
 }
 
 /** Examen oficial con su enunciado y su rúbrica de corrección. */
@@ -79,5 +77,7 @@ export interface ExamenOficial {
   readonly materialPermitido: readonly string[];
   /** Estructura de archivos de la solución completa. */
   readonly estructura: string;
+  /** Solucionario completo, en orden de lectura y sin duplicados. */
+  readonly solucion: readonly FicheroSolucion[];
   readonly consejos: readonly string[];
 }
